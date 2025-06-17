@@ -48,7 +48,7 @@ jobs:
       - name: Download inventory
         uses: actions/download-artifact@v4
         with:
-          name: output
+          name: inventory
           path: ./ansible
 
       - name: Run playbook
