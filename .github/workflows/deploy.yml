@@ -25,13 +25,13 @@ jobs:
         run: terraform apply --auto-approve
 
       - name: Output
-        run: echo -e "[myhosts]\n$(terraform output --raw instance_ip)" > output
+        run: echo -e "[myhosts]\n$(terraform output --raw instance_ip)" > inventory.ini
 
       - name: Upload output
         uses: actions/upload-artifact@v4
         with:
-          name: output
-          path: ./terraform/output
+          name: inventory
+          path: ./terraform/inventory.ini
 
   ansible:
     needs: terraform
@@ -49,6 +49,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: output
+          path: ./ansible
 
       - name: Run playbook
         run: ansible-playbook -i inventory.ini playbook.yaml
