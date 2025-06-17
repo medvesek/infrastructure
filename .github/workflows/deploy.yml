@@ -21,5 +21,28 @@ jobs:
       - name: Init
         run: terraform init
 
-      - name: Plan
+      - name: Apply
         run: terraform apply --auto-approve
+
+      - name: Output
+        run: echo -e "[myhosts]\n$(terraform output --raw instance_ip)" > output
+
+      - name: Upload output
+        uses: actions/upload-artifact@v4
+        with:
+          name: output
+          path: output
+
+  ansible:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ansible
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ansible
+        run: sudo apt install -y ansible
+
+      - name: ansible
+        run: ansible
