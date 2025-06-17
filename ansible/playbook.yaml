@@ -1,0 +1,33 @@
+- name: My first play
+  hosts: myhosts
+  tasks:
+    - name: Ping my hosts
+      ansible.builtin.ping:
+
+    - name: Print message
+      ansible.builtin.debug:
+        msg: Hello world
+
+    - name: Nginx
+      become: yes
+      apt:
+        name: nginx
+        state: latest
+        update_cache: yes
+
+    - name: ufw ssh enable
+      become: yes
+      ufw:
+        rule: allow
+        name: OpenSSH
+
+    - name: Nginx Full
+      become: yes
+      ufw:
+        rule: allow
+        name: Nginx Full
+
+    - name: ufw enable
+      become: yes
+      ufw:
+        state: enabled
