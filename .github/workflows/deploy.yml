@@ -13,7 +13,7 @@ jobs:
       run:
         working-directory: ./terraform
     outputs:
-      aquila_ip: ${{ steps.setvars.outputs.aquila_ip }}
+      aquila_ip: ${{ steps.output.outputs.aquila_ip }}
     steps:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
@@ -27,6 +27,7 @@ jobs:
         run: terraform apply --auto-approve
 
       - name: Output
+        id: output
         run: echo "aquila_ip=(terraform output --raw instance_ip)" >> $GITHUB_OUTPUT
 
       #- name: Output
