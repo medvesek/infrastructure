@@ -9,12 +9,6 @@
         rule: allow
         name: OpenSSH
 
-    - name: UFW enable HTTP/S
-      become: yes
-      ufw:
-        rule: deny
-        name: Nginx Full
-
     - name: UFW enable
       become: yes
       ufw:
@@ -22,11 +16,11 @@
 
     - name: Copy docker-compose
       copy:
-        src: ./docker-compose.yml
-        dest: ~/docker-compose.yml
+        src: ./docker-compose.yaml
+        dest: ~/docker-compose.yaml
 
     - name: Run docker compose
       community.docker.docker_compose_v2:
-        project_src: ~/docker-compose.yml
+        project_src: ~/docker-compose.yaml
         project_name: my_project
         state: present
