@@ -12,6 +12,8 @@ jobs:
     defaults:
       run:
         working-directory: ./terraform
+    outputs:
+      aquila_ip: ${{ steps.setvars.outputs.aquila_ip }}
     steps:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
@@ -25,13 +27,16 @@ jobs:
         run: terraform apply --auto-approve
 
       - name: Output
-        run: echo -e "[myhosts]\n$(terraform output --raw instance_ip)" > inventory.ini
+        run: echo "aquila_ip=(terraform output --raw instance_ip)" >> $GITHUB_OUTPUT
 
-      - name: Upload output
-        uses: actions/upload-artifact@v4
-        with:
-          name: inventory
-          path: ./terraform/inventory.ini
+      #- name: Output
+      #  run: echo -e "[myhosts]\n$(terraform output --raw instance_ip)" > inventory.ini
+
+      #- name: Upload output
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #   name: inventory
+      #   path: ./terraform/inventory.ini
 
   ansible:
     needs: terraform
@@ -47,11 +52,11 @@ jobs:
       - name: Install ansible
         run: sudo apt-get install -y ansible
 
-      - name: Download inventory
-        uses: actions/download-artifact@v4
-        with:
-          name: inventory
-          path: ./ansible
+      - name: Prepare inventory
+        run: echo -e "[aquila]\n${{ needs.terraform.outputs.aquila_ip }}"
+      
+      - name: Add to known hosts
+        run: ssh-keyscan ${{ needs.terraform.outputs.aquila_ip }} >> /home/runner/.ssh/known_hosts
 
       - name: Run playbook
         run: ansible-playbook -i inventory.ini playbook.yaml
