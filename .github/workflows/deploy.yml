@@ -41,15 +41,18 @@ jobs:
       - uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_KEY_PRIVATE_GITHUB_ACTIONS }}
-        
+
       - name: Install ansible
         run: sudo apt-get install -y ansible
 
       - name: Prepare inventory
         run: echo -e "[aquila]\n${{ needs.terraform.outputs.aquila_ip }}" > inventory.ini
-      
+
       - name: Add to known hosts
         run: ssh-keyscan ${{ needs.terraform.outputs.aquila_ip }} >> /home/runner/.ssh/known_hosts
+
+      - name: Install dependencies
+        run: ansible-galaxy role install geerlingguy.docker
 
       - name: Run playbook
         run: ansible-playbook -u root -i inventory.ini playbook.yaml
