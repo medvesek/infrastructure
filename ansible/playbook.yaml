@@ -1,33 +1,28 @@
 - name: My first play
   hosts: aquila
+  roles:
+    - geerlingguy.docker
   tasks:
-    - name: Ping my hosts
-      ansible.builtin.ping:
-
-    - name: Print message
-      ansible.builtin.debug:
-        msg: Hello world
-
-    - name: Nginx
+    - name: Install Nginx
       become: yes
       apt:
         name: nginx
         state: latest
         update_cache: yes
 
-    - name: ufw ssh enable
+    - name: UFW enable SSH
       become: yes
       ufw:
         rule: allow
         name: OpenSSH
 
-    - name: Nginx Full
+    - name: UFW enable HTTP/S
       become: yes
       ufw:
         rule: allow
         name: Nginx Full
 
-    - name: ufw enable
+    - name: UFW enable
       become: yes
       ufw:
         state: enabled
