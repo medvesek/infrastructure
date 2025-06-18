@@ -21,6 +21,6 @@
 
     - name: Run docker compose
       community.docker.docker_compose_v2:
-        project_src: ~
+        project_src: ~/
         project_name: my_project
         state: present
