@@ -52,4 +52,4 @@ jobs:
         run: ssh-keyscan ${{ needs.terraform.outputs.aquila_ip }} >> /home/runner/.ssh/known_hosts
 
       - name: Run playbook
-        run: ansible-playbook -i inventory.ini playbook.yaml
+        run: ansible-playbook -u root -i inventory.ini playbook.yaml
