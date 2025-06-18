@@ -3,13 +3,6 @@
   roles:
     - geerlingguy.docker
   tasks:
-    - name: Install Nginx
-      become: yes
-      apt:
-        name: nginx
-        state: absent
-        update_cache: yes
-
     - name: UFW enable SSH
       become: yes
       ufw:
@@ -19,7 +12,7 @@
     - name: UFW enable HTTP/S
       become: yes
       ufw:
-        rule: disallow
+        rule: deny
         name: Nginx Full
 
     - name: UFW enable
