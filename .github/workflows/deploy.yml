@@ -52,7 +52,7 @@ jobs:
         run: ssh-keyscan ${{ needs.terraform.outputs.aquila_ip }} >> /home/runner/.ssh/known_hosts
 
       - name: Install dependencies
-        run: ansible-galaxy role install geerlingguy.docker
+        run: ansible-galaxy install -r requirements.yaml
 
       - name: Run playbook
         run: ansible-playbook -u root -i inventory.ini playbook.yaml

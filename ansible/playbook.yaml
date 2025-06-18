@@ -1,5 +1,5 @@
 - name: My first play
-  hosts: aquila
+  hosts: all
   roles:
     - geerlingguy.docker
   tasks:
@@ -7,7 +7,7 @@
       become: yes
       apt:
         name: nginx
-        state: latest
+        state: absent
         update_cache: yes
 
     - name: UFW enable SSH
@@ -19,10 +19,21 @@
     - name: UFW enable HTTP/S
       become: yes
       ufw:
-        rule: allow
+        rule: disallow
         name: Nginx Full
 
     - name: UFW enable
       become: yes
       ufw:
         state: enabled
+
+    - name: Copy docker-compose
+      copy:
+        src: ./docker-compose.yml
+        dest: ~/docker-compose.yml
+
+    - name: Run docker compose
+      community.docker.docker_compose_v2:
+        project_src: ~/docker-compose.yml
+        project_name: my_project
+        state: present
