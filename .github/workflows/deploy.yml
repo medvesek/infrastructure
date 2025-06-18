@@ -28,7 +28,7 @@ jobs:
 
       - name: Output
         id: output
-        run: echo "aquila_ip=(terraform output --raw instance_ip)" >> $GITHUB_OUTPUT
+        run: echo "aquila_ip=$(terraform output --raw instance_ip)" >> $GITHUB_OUTPUT
 
       #- name: Output
       #  run: echo -e "[myhosts]\n$(terraform output --raw instance_ip)" > inventory.ini
