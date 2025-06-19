@@ -49,7 +49,16 @@ resource "hcloud_server" "aquila" {
   }
 }
 
+data "cloudflare_account" "my_account" {
+  filter = {
+  }
+}
+
 resource "cloudflare_zone" "cmrlj" {
   name = "cmrlj.eu"
   type = "full"
+  account ={
+    id = data.cloudflare_account.my_account.account_id
+  } 
 }
+
