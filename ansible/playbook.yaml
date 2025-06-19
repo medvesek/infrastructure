@@ -41,3 +41,9 @@
       lineinfile:
         path: /etc/postfix/main.cf
         line: virtual_alias_maps = hash:/etc/postfix/virtual
+
+    - name: Postfix virtual
+      copy:
+        dest: /etc/postfix/virtual
+        content: |
+          @cmrlj.eu	{{ lookup("env", "MY_EMAIL") }}
