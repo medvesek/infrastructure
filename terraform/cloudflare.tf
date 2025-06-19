@@ -23,5 +23,5 @@ resource "cloudflare_dns_record" "testme" {
   type = "A"
   content = hcloud_server.aquila.ipv4_address
   proxied = true
-  ttl = 3600
+  ttl = 1
 }
