@@ -32,7 +32,12 @@
         project_name: my_project
         state: present
 
-    - name: Copy postfix main.cf
-      copy:
-        src: ./postfix/main.cf
-        dest: /etc/postfix/main.cf
+    - name: Postfix main.cf
+      lineinfile:
+        path: /etc/postfix/main.cf
+        line: virtual_alias_domains = localhost
+
+    - name: Postfix main.cf
+      lineinfile:
+        path: /etc/postfix/main.cf
+        line: virtual_alias_maps = hash:/etc/postfix/virtual
