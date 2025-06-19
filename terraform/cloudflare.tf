@@ -42,12 +42,13 @@ resource "cloudflare_dns_record" "mail_mx" {
   type = "mx"
   content = "mail.cmrlj.eu"
   proxied = true
+  priority = 1
   ttl = 1
 }
 
 resource "cloudflare_dns_record" "mail_spf" {
   zone_id = cloudflare_zone.cmrlj.id
-  name = "v=spf1 a mx ~all"
+  name = ""
   content = "v=spf1 a mx ~all"
   type = "txt"
   ttl = 3600
