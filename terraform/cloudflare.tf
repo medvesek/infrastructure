@@ -48,7 +48,7 @@ resource "cloudflare_dns_record" "mail_mx" {
 resource "cloudflare_dns_record" "mail_spf" {
   zone_id = cloudflare_zone.cmrlj.id
   name = "@"
-  content = "v=spf1 a mx ~all"
+  content = "\"v=spf1 a mx ~all\""
   type = "txt"
   ttl = 3600
 }
