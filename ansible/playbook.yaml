@@ -31,3 +31,8 @@
         project_src: ~/
         project_name: my_project
         state: present
+
+    - name: Copy postfix main.cf
+      copy:
+        src: ./postfix/main.cf
+        dest: /etc/postfix/main.cf
