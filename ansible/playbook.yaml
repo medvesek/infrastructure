@@ -46,7 +46,7 @@
       copy:
         dest: /etc/postfix/virtual
         content: |
-          @cmrlj.eu	{{ lookup("ansible.builtin.env", "MY_EMAIL") }}
+          @cmrlj.eu	{{ lookup("env", "MY_EMAIL") }}
 
     - name: Postfix postmap
       command: postmap /etc/postfix/virtual
