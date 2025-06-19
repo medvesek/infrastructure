@@ -49,7 +49,7 @@ resource "hcloud_server" "aquila" {
   }
 }
 
-resource "cloudflare_zone" "cmrlj.eu" {
+resource "cloudflare_zone" "cmrlj" {
   name = "cmrlj.eu"
   type = "full"
 }
