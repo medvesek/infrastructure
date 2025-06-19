@@ -19,7 +19,7 @@ resource "cloudflare_zone" "cmrlj" {
 // DNS RECORDS
 resource "cloudflare_dns_record" "testme" {
   zone_id = cloudflare_zone.cmrlj.id
-  name = "testm.cmrlj.eu"
+  name = "testme.cmrlj.eu"
   type = "A"
   content = hcloud_server.aquila.ipv4_address
   proxied = true
