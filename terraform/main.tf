@@ -12,11 +12,19 @@ terraform {
       source  = "hetznercloud/hcloud"
       version = "~> 1.45"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 5"
+    }
   }
 }
 
 provider "hcloud" {
   token = var.HCLOUD_TOKEN
+}
+
+provider "cloudflare" {
+  api_token = var.CLOUDFLARE_API_TOKEN
 }
 
 resource "hcloud_ssh_key" "home_desktop" {
@@ -39,4 +47,9 @@ resource "hcloud_server" "aquila" {
     ipv4_enabled = true
     ipv6_enabled = true
   }
+}
+
+resource "cloudflare_zone" "cmrlj.eu" {
+  name = "cmrlj.eu"
+  type = "full"
 }
