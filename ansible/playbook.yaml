@@ -40,11 +40,13 @@
     - name: Postfix main.cf
       lineinfile:
         path: /etc/postfix/main.cf
-        line: virtual_alias_domains = localhost
+        regexp: "^virtual_alias_domains ="
+        line: virtual_alias_domains = cmrlj.eu
 
     - name: Postfix main.cf
       lineinfile:
         path: /etc/postfix/main.cf
+        regexp: "^virtual_alias_maps ="
         line: virtual_alias_maps = hash:/etc/postfix/virtual
 
     - name: Postfix virtual
@@ -58,3 +60,5 @@
 
     - name: Postfix reload
       command: postfix reload
+
+    # Need to set myhostname=mail.cmrlj.eu and virtual_alias_domains=cmrlj.eu in main.cf
