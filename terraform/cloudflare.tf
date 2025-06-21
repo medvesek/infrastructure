@@ -7,13 +7,13 @@ data "cloudflare_account" "my_account" {
   filter = {}
 }
 
-data "cloudflare_zone" "ajmuht" {
-  filter = {
-    name = "ajmuht.eu"
+// ZONE
+resource "cloudflare_zone" "ajmuht" {
+  name = "ajmuht.eu"
+  account ={
+    id = data.cloudflare_account.my_account.account_id
   }
 }
-
-// ZONE
 resource "cloudflare_zone" "cmrlj" {
   name = "cmrlj.eu"
   type = "full"
@@ -59,7 +59,7 @@ resource "cloudflare_dns_record" "mail_spf" {
 }
 
 resource "cloudflare_dns_record" "ajmuht_mail" {
-  zone_id = data.cloudflare_zone.ajmuht.zone_id
+  zone_id = cloudflare_zone.ajmuht.id
   name = "mail.ajmuht.eu"
   type = "A"
   content = hcloud_server.aquila.ipv4_address
@@ -68,7 +68,7 @@ resource "cloudflare_dns_record" "ajmuht_mail" {
 }
 
 resource "cloudflare_dns_record" "ajmuht_mail_mx" {
-  zone_id = data.cloudflare_zone.ajmuht.zone_id
+  zone_id = cloudflare_zone.ajmuht.id
   name = "ajmuht.eu"
   type = "MX"
   content = "mail.ajmuht.eu"
@@ -77,7 +77,7 @@ resource "cloudflare_dns_record" "ajmuht_mail_mx" {
 }
 
 resource "cloudflare_dns_record" "ajmuht_mail_spf" {
-  zone_id = data.cloudflare_zone.ajmuht.zone_id
+  zone_id = cloudflare_zone.ajmuht.id
   name = "ajmuht.eu"
   content = "\"v=spf1 a mx ~all\""
   type = "TXT"
