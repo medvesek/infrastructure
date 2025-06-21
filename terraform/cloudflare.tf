@@ -34,7 +34,7 @@ resource "cloudflare_dns_record" "testme" {
 
 resource "cloudflare_dns_record" "mail" {
   zone_id = cloudflare_zone.cmrlj.id
-  name = "mail"
+  name = "mail.cmrlj.eu"
   type = "A"
   content = hcloud_server.aquila.ipv4_address
   proxied = true
@@ -45,7 +45,7 @@ resource "cloudflare_dns_record" "mail" {
 resource "cloudflare_dns_record" "mail_mx" {
   zone_id = cloudflare_zone.cmrlj.id
   name = "cmrlj.eu"
-  type = "mx"
+  type = "MX"
   content = "mail.cmrlj.eu"
   priority = 1
   ttl = 1
@@ -55,6 +55,6 @@ resource "cloudflare_dns_record" "mail_spf" {
   zone_id = cloudflare_zone.cmrlj.id
   name = "cmrlj.eu"
   content = "\"v=spf1 a mx ~all\""
-  type = "txt"
+  type = "TXT"
   ttl = 3600
 }
