@@ -41,7 +41,7 @@
       lineinfile:
         path: /etc/postfix/main.cf
         regexp: "^virtual_alias_domains ="
-        line: virtual_alias_domains = cmrlj.eu
+        line: virtual_alias_domains = cmrlj.eu ajmuht.eu
 
     - name: Postfix main.cf
       lineinfile:
@@ -60,5 +60,3 @@
 
     - name: Postfix reload
       command: postfix reload
-
-    # Need to set myhostname=mail.cmrlj.eu and virtual_alias_domains=cmrlj.eu in main.cf
