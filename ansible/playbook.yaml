@@ -54,6 +54,7 @@
         dest: /etc/postfix/virtual
         content: |
           @cmrlj.eu	{{ lookup("env", "MY_EMAIL") }}
+          @ajmuht.eu	{{ lookup("env", "MY_EMAIL") }}
 
     - name: Postfix postmap
       command: postmap /etc/postfix/virtual
