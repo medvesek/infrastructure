@@ -8,6 +8,7 @@ on:
 
 env:
   MY_EMAIL: ${{ secrets.MY_EMAIL }}
+  TRAEFIK_BASIC_AUTH: ${{ secrets.TRAEFIK_BASIC_AUTH }}
 
 jobs:
   terraform:
