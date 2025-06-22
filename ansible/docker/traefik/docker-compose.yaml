@@ -1,0 +1,43 @@
+services:
+  traefik:
+    image: traefik:v2.10
+    command:
+      # Enable traefik dashboard
+      - --api=true
+      # Configure docker provider - autodiscover services
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false # Services need to be enabled with a traefik.enable=true label to be autodiscovered
+      # Entrypoints - 80 and 443
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure # Redirect http to https
+      - --entryPoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.websecure.address=:443
+      # SSL - letsencryppt
+      - --certificatesresolvers.le.acme.httpchallenge=true
+      - --certificatesresolvers.le.acme.httpchallenge.entrypoint=web
+      - --certificatesresolvers.le.acme.email=${MY_EMAIL}
+      - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
+    labels:
+      # For dashboard
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.ajmuht.eu`)"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.tls.certresolver=le"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_BASIC_AUTH}"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - traefik-certs:/letsencrypt # Make letsencrypt cetificates persistent
+    networks:
+      - traefik-net
+
+volumes:
+  traefik-certs:
+
+networks:
+  traefik-net:
+    name: traefik-net

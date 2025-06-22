@@ -1,0 +1,16 @@
+services:
+  echo:
+    image: ealen/echo-server
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.echo.rule=Host(`test.cmrlj.eu`)"
+      - "traefik.http.routers.echo.entrypoints=websecure"
+      - "traefik.http.routers.echo.tls.certresolver=le"
+    networks:
+      - traefik-net
+    expose:
+      - 80
+
+networks:
+  traefik-net:
+    external: true
