@@ -7,7 +7,7 @@ data "cloudflare_account" "my_account" {
   filter = {}
 }
 
-// ZONE
+// ZONES
 resource "cloudflare_zone" "ajmuht" {
   name = "ajmuht.eu"
   account ={
@@ -22,15 +22,36 @@ resource "cloudflare_zone" "cmrlj" {
   } 
 }
 
-// DNS RECORDS
-resource "cloudflare_dns_record" "testme" {
-  zone_id = cloudflare_zone.cmrlj.id
-  name = "testme.cmrlj.eu"
+// DNS - SITES
+resource "cloudflare_dns_record" "test_ajmuht" {
+  zone_id = cloudflare_zone.ajmuht.id
+  name = "test.ajmuht.eu"
   type = "A"
   content = hcloud_server.aquila.ipv4_address
   proxied = true
   ttl = 1
 }
+
+resource "cloudflare_dns_record" "test_cmrlj" {
+  zone_id = cloudflare_zone.cmrlj.id
+  name = "test.cmrlj.eu"
+  type = "A"
+  content = hcloud_server.aquila.ipv4_address
+  proxied = true
+  ttl = 1
+}
+
+resource "cloudflare_dns_record" "traefix_ajmuht" {
+  zone_id = cloudflare_zone.ajmuht.id
+  name = "traefik.ajmuht.eu"
+  type = "A"
+  content = hcloud_server.aquila.ipv4_address
+  proxied = true
+  ttl = 1
+}
+
+
+// DNS - MAIL
 
 resource "cloudflare_dns_record" "mail" {
   zone_id = cloudflare_zone.cmrlj.id
