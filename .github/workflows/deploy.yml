@@ -38,6 +38,7 @@ jobs:
   ansible:
     needs: terraform
     runs-on: ubuntu-latest
+    container: ghcr.io/medvesek/infrastructure-ansible:latest
     defaults:
       run:
         working-directory: ./ansible
@@ -47,8 +48,8 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_KEY_PRIVATE_GITHUB_ACTIONS }}
 
-      - name: Install ansible
-        run: sudo apt-get install -y ansible
+      #- name: Install ansible
+      #  run: sudo apt-get install -y ansible
 
       - name: Prepare inventory
         run: echo -e "[aquila]\n${{ needs.terraform.outputs.aquila_ip }}" > inventory.ini
