@@ -72,7 +72,7 @@ jobs:
           done
 
       - name: Add to known hosts
-        run: ssh-keyscan ${{ needs.terraform.outputs.aquila_ip }} >> /home/runner/.ssh/known_hosts
+        run: ssh-keyscan ${{ needs.terraform.outputs.aquila_ip }} >> ~/.ssh/known_hosts
 
       - name: Install dependencies
         run: ansible-galaxy install -r requirements.yaml
