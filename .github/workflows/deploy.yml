@@ -2,9 +2,10 @@ name: Deploy
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
+
+  # push:
+  #branches:
+  #- master
 
 env:
   MY_EMAIL: ${{ secrets.MY_EMAIL }}
