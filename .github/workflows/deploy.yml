@@ -52,6 +52,7 @@ jobs:
       #  run: sudo apt-get install -y ansible
 
       - name: Prepare inventory
+        shell: bash
         run: echo -e "[aquila]\n${{ needs.terraform.outputs.aquila_ip }}" > inventory.ini
 
       - name: Prepare env files
