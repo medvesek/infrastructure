@@ -70,6 +70,15 @@ resource "cloudflare_dns_record" "traefix_ajmuht" {
   ttl = 1
 }
 
+resource "cloudflare_dns_record" "laravel_example" {
+  zone_id = cloudflare_zone.ajmuht.id
+  name = "laravel-example.ajmuht.eu"
+  type = "A"
+  content = hcloud_server.aquila.ipv4_address
+  proxied = true
+  ttl = 1
+}
+
 
 // DNS - MAIL
 
