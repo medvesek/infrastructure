@@ -3,9 +3,9 @@ name: Deploy
 on:
   workflow_dispatch:
 
-  # push:
-  #branches:
-  #- master
+  push:
+    branches:
+      - master
 
 env:
   MY_EMAIL: ${{ secrets.MY_EMAIL }}
@@ -48,15 +48,14 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_KEY_PRIVATE_GITHUB_ACTIONS }}
 
-      #- name: Install ansible
-      #  run: sudo apt-get install -y ansible
-
       - name: Prepare inventory
         shell: bash
         run: echo -e "[aquila]\n${{ needs.terraform.outputs.aquila_ip }}" > inventory.ini
 
       - name: Prepare env files
         shell: bash
+        # Finds all .env.example files and replaces all values in them with corresponding
+        # values from the environment
         run: |
           find . -name '.env.example' | while read file; do
           dir=$(dirname "$file")
@@ -80,3 +79,15 @@ jobs:
 
       - name: Run playbook
         run: ansible-playbook -u root -i inventory.ini playbook.yaml
+
+  secrets:
+    needs: terraform
+    runs-on: ubuntu-latest
+    steps:
+      - uses: gliech/create-github-secret-action@v1
+        with:
+          location: medvesek
+          name: AQUILA_IP
+          value: ${{ needs.terraform.outputs.aquila_ip }}
+          org_visibility: all
+          pa_token: ${{ secrets.PA_TOKEN }}
