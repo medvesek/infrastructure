@@ -7,10 +7,11 @@ services:
       # Configure docker provider - autodiscover services
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false # Services need to be enabled with a traefik.enable=true label to be autodiscovered
+      - --providers.docker.network=traefik-net
       # Entrypoints - 80 and 443
       - --entrypoints.web.address=:80
       - --entrypoints.web.http.redirections.entrypoint.to=websecure # Redirect http to https
-      - --entryPoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
       - --entrypoints.websecure.address=:443
       # SSL - letsencryppt
       - --certificatesresolvers.le.acme.httpchallenge=true
