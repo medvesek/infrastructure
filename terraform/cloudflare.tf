@@ -1,135 +1,83 @@
-provider "cloudflare" {
-  api_token = var.CLOUDFLARE_API_TOKEN
+moved {
+  from = cloudflare_dns_record.ajmuht_mail
+  to = module.cloudflare.cloudflare_dns_record.ajmuht_mail
+}
+moved {
+  from = cloudflare_zone.ajmuht
+  to = module.cloudflare.cloudflare_zone.ajmuht
 }
 
-// DATA
-data "cloudflare_account" "my_account" {
-  filter = {}
+moved {
+  from = cloudflare_zone_setting.ajmuht_ssl_automatic_mode
+  to = module.cloudflare.cloudflare_zone_setting.ajmuht_ssl_automatic_mode
 }
 
-// ZONES
-resource "cloudflare_zone" "ajmuht" {
-  name = "ajmuht.eu"
-  account ={
-    id = data.cloudflare_account.my_account.account_id
-  }
-}
-resource "cloudflare_zone_setting" "ajmuht_ssl_automatic_mode" {
-  zone_id = cloudflare_zone.ajmuht.id
-  setting_id = "ssl_automatic_mode"
-  value = "custom"
-}
-resource "cloudflare_zone_setting" "ajmuht_ssl_mode" {
-  zone_id = cloudflare_zone.ajmuht.id
-  setting_id = "ssl"
-  value = "full"
-}
-resource "cloudflare_zone" "cmrlj" {
-  name = "cmrlj.eu"
-  type = "full"
-  account ={
-    id = data.cloudflare_account.my_account.account_id
-  } 
-}
-resource "cloudflare_zone_setting" "cmrlj_ssl_automatic_mode" {
-  zone_id = cloudflare_zone.cmrlj.id
-  setting_id = "ssl_automatic_mode"
-  value = "custom"
-}
-resource "cloudflare_zone_setting" "cmrlj_ssl_mode" {
-  zone_id = cloudflare_zone.cmrlj.id
-  setting_id = "ssl"
-  value = "full"
+moved {
+  from = cloudflare_zone_setting.ajmuht_ssl_mode
+  to = module.cloudflare.cloudflare_zone_setting.ajmuht_ssl_mode
 }
 
-// DNS - SITES
-resource "cloudflare_dns_record" "test_ajmuht" {
-  zone_id = cloudflare_zone.ajmuht.id
-  name = "test.ajmuht.eu"
-  type = "A"
-  content = hcloud_server.aquila.ipv4_address
-  proxied = true
-  ttl = 1
+moved {
+  from = cloudflare_zone.cmrlj
+  to = module.cloudflare.cloudflare_zone.cmrlj
 }
 
-resource "cloudflare_dns_record" "test_cmrlj" {
-  zone_id = cloudflare_zone.cmrlj.id
-  name = "test.cmrlj.eu"
-  type = "A"
-  content = hcloud_server.aquila.ipv4_address
-  proxied = true
-  ttl = 1
+moved {
+  from = cloudflare_zone_setting.cmrlj_ssl_automatic_mode
+  to = module.cloudflare.cloudflare_zone_setting.cmrlj_ssl_automatic_mode
 }
 
-resource "cloudflare_dns_record" "traefix_ajmuht" {
-  zone_id = cloudflare_zone.ajmuht.id
-  name = "traefik.ajmuht.eu"
-  type = "A"
-  content = hcloud_server.aquila.ipv4_address
-  proxied = true
-  ttl = 1
+moved {
+  from = cloudflare_zone_setting.cmrlj_ssl_mode
+  to = module.cloudflare.cloudflare_zone_setting.cmrlj_ssl_mode
 }
 
-resource "cloudflare_dns_record" "laravel_example" {
-  zone_id = cloudflare_zone.ajmuht.id
-  name = "laravel-example.ajmuht.eu"
-  type = "A"
-  content = hcloud_server.aquila.ipv4_address
-  proxied = true
-  ttl = 1
+moved {
+  from = cloudflare_dns_record.test_ajmuht
+  to = module.cloudflare.cloudflare_dns_record.test_ajmuht
 }
 
-
-// DNS - MAIL
-
-resource "cloudflare_dns_record" "mail" {
-  zone_id = cloudflare_zone.cmrlj.id
-  name = "mail.cmrlj.eu"
-  type = "A"
-  content = hcloud_server.aquila.ipv4_address
-  proxied = true
-  ttl = 1
+moved {
+  from = cloudflare_dns_record.test_cmrlj
+  to = module.cloudflare.cloudflare_dns_record.test_cmrlj
 }
 
-resource "cloudflare_dns_record" "mail_mx" {
-  zone_id = cloudflare_zone.cmrlj.id
-  name = "cmrlj.eu"
-  type = "MX"
-  content = "mail.cmrlj.eu"
-  priority = 1
-  ttl = 1
+moved {
+  from = cloudflare_dns_record.traefix_ajmuht
+  to = module.cloudflare.cloudflare_dns_record.traefik_ajmuht
 }
 
-resource "cloudflare_dns_record" "mail_spf" {
-  zone_id = cloudflare_zone.cmrlj.id
-  name = "cmrlj.eu"
-  content = "\"v=spf1 a mx ~all\""
-  type = "TXT"
-  ttl = 3600
+moved {
+  from = cloudflare_dns_record.laravel_example
+  to = module.cloudflare.cloudflare_dns_record.laravel_example
 }
 
-resource "cloudflare_dns_record" "ajmuht_mail" {
-  zone_id = cloudflare_zone.ajmuht.id
-  name = "mail.ajmuht.eu"
-  type = "A"
-  content = hcloud_server.aquila.ipv4_address
-  proxied = true
-  ttl = 1
+moved {
+  from = cloudflare_dns_record.mail
+  to = module.cloudflare.cloudflare_dns_record.cmrlj_mail
 }
 
-resource "cloudflare_dns_record" "ajmuht_mail_mx" {
-  zone_id = cloudflare_zone.ajmuht.id
-  name = "ajmuht.eu"
-  type = "MX"
-  content = "mail.ajmuht.eu"
-  priority = 1
-  ttl = 1
+moved {
+  from = cloudflare_dns_record.mail_mx
+  to = module.cloudflare.cloudflare_dns_record.cmrlj_mail_mx
 }
 
-resource "cloudflare_dns_record" "ajmuht_mail_spf" {
-  zone_id = cloudflare_zone.ajmuht.id
-  name = "ajmuht.eu"
-  content = "\"v=spf1 a mx ~all\""
-  type = "TXT"
-  ttl = 3600
+moved {
+  from = cloudflare_dns_record.mail_spf
+  to = module.cloudflare.cloudflare_dns_record.cmrlj_mail_spf
+}
+
+moved {
+  from = cloudflare_dns_record.ajmuht_mail
+  to = module.cloudflare.cloudflare_dns_record.ajmuht_mail
+}
+
+moved {
+  from = cloudflare_dns_record.ajmuht_mail_mx
+  to = module.cloudflare.cloudflare_dns_record.ajmuht_mail_mx
+}
+
+moved {
+  from =  cloudflare_dns_record.ajmuht_mail_spf
+  to = module.cloudflare.cloudflare_dns_record.ajmuht_mail_spf
 }

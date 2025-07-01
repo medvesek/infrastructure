@@ -25,6 +25,11 @@ jobs:
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
+      - name: update
+        run: apt-get update
+      - name: jq
+        run: apt-get install jq
+
       - name: Init
         run: terraform init
 
@@ -33,7 +38,7 @@ jobs:
 
       - name: Output
         id: output
-        run: echo "aquila_ip=$(terraform output --raw instance_ip)" >> $GITHUB_OUTPUT
+        run: echo "aquila_ip=$(terraform output -json servers | jq -r '.aquila')" >> $GITHUB_OUTPUT
 
   ansible:
     needs: terraform

@@ -1,27 +1,16 @@
-provider "hcloud" {
-  token = var.HCLOUD_TOKEN
-}
-
 // SSH KEYS
-resource "hcloud_ssh_key" "home_desktop" {
-  name = "home_desktop"
-  public_key = var.SSH_KEY_PUBLIC_HOME_DESKTOP
+
+moved {
+  from = hcloud_ssh_key.home_desktop
+  to = module.hetzner.hcloud_ssh_key.home_desktop
 }
 
-resource "hcloud_ssh_key" "github_actions" {
-  name = "github_actions"
-  public_key = var.SSH_KEY_PUBLIC_GITHUB_ACTIONS
+moved {
+  from = hcloud_ssh_key.github_actions
+  to = module.hetzner.hcloud_ssh_key.github_actions
 }
 
-// SERVERS
-resource "hcloud_server" "aquila" {
-  name        = "aquila"
-  image       = "ubuntu-24.04"
-  server_type = "cx22"
-  location    = "nbg1"
-  ssh_keys    = ["home_desktop", "github_actions"]
-  public_net {
-    ipv4_enabled = true
-    ipv6_enabled = true
-  }
+moved {
+  from = hcloud_server.aquila
+  to = module.hetzner.hcloud_server.aquila
 }
