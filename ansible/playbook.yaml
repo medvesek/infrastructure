@@ -1,6 +1,7 @@
 - name: My first play
   hosts: all
   roles:
+    - common
     - geerlingguy.docker
     - role: geerlingguy.postfix
       vars:
