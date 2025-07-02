@@ -1,36 +1,41 @@
-// AJMUHT
-resource "cloudflare_zone" "ajmuht" {
-  name = "ajmuht.eu"
-  account ={
-    id = data.cloudflare_account.my_account.account_id
-  }
+module "ajmuht_eu_domain" {
+  source = "./modules/domain"
+  account_id = data.cloudflare_account.my_account.account_id
+  domain = "ajmuht.eu"
 }
-resource "cloudflare_zone_setting" "ajmuht_ssl_automatic_mode" {
-  zone_id = cloudflare_zone.ajmuht.id
-  setting_id = "ssl_automatic_mode"
-  value = "custom"
-}
-resource "cloudflare_zone_setting" "ajmuht_ssl_mode" {
-  zone_id = cloudflare_zone.ajmuht.id
-  setting_id = "ssl"
-  value = "full"
+module "cmrlj_eu_domain" {
+  source = "./modules/domain"
+  account_id = data.cloudflare_account.my_account.account_id
+  domain = "cmrlj.eu"
 }
 
-// CMRLJ
-resource "cloudflare_zone" "cmrlj" {
-  name = "cmrlj.eu"
-  type = "full"
-  account ={
-    id = data.cloudflare_account.my_account.account_id
-  } 
+moved {
+  from = cloudflare_zone.ajmuht
+  to = module.ajmuht_eu_domain.cloudflare_zone.zone
 }
-resource "cloudflare_zone_setting" "cmrlj_ssl_automatic_mode" {
-  zone_id = cloudflare_zone.cmrlj.id
-  setting_id = "ssl_automatic_mode"
-  value = "custom"
+
+moved {
+  from = cloudflare_zone.cmrlj
+  to = module.cmrlj_eu_domain.cloudflare_zone.zone
 }
-resource "cloudflare_zone_setting" "cmrlj_ssl_mode" {
-  zone_id = cloudflare_zone.cmrlj.id
-  setting_id = "ssl"
-  value = "full"
+
+moved {
+  from = cloudflare_zone_setting.ajmuht_ssl_automatic_mode
+  to = module.ajmuht_eu_domain.cloudflare_zone_setting.ssl_automatic_mode
 }
+
+moved {
+  from = cloudflare_zone_setting.ajmuht_ssl_mode
+  to = module.ajmuht_eu_domain.cloudflare_zone_setting.ssl_mode
+}
+
+moved {
+  from = cloudflare_zone_setting.cmrlj_ssl_automatic_mode
+  to = module.cmrlj_eu_domain.cloudflare_zone_setting.ssl_automatic_mode
+}
+
+moved {
+  from = cloudflare_zone_setting.cmrlj_ssl_mode
+  to = module.cmrlj_eu_domain.cloudflare_zone_setting.ssl_mode
+}
+

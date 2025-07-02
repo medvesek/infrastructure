@@ -1,11 +1,11 @@
 module "cmrlj_mail" {
   source = "./modules/mail"
-  zone = cloudflare_zone.cmrlj
+  zone = module.cmrlj_eu_domain
   ip = var.servers.aquila
 }
 
 module "ajmuht_mail" {
   source = "./modules/mail"
-  zone = cloudflare_zone.ajmuht
+  zone = module.ajmuht_eu_domain
   ip = var.servers.aquila
 }

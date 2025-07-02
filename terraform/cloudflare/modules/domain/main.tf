@@ -13,12 +13,12 @@ resource "cloudflare_zone" "zone" {
     id = var.account_id
   }
 }
-resource "cloudflare_zone_setting" "ajmuht_ssl_automatic_mode" {
+resource "cloudflare_zone_setting" "ssl_automatic_mode" {
   zone_id = cloudflare_zone.zone.id
   setting_id = "ssl_automatic_mode"
   value = "custom"
 }
-resource "cloudflare_zone_setting" "ajmuht_ssl_mode" {
+resource "cloudflare_zone_setting" "ssl_mode" {
   zone_id = cloudflare_zone.zone.id
   setting_id = "ssl"
   value = "full"
