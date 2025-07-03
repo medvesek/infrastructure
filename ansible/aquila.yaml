@@ -1,6 +1,7 @@
-- name: My first play
-  hosts: all
+- name: Aquila
+  hosts: aquila
   roles:
+    - common
     - geerlingguy.docker
     - role: geerlingguy.postfix
       vars:
@@ -9,12 +10,6 @@
         postfix_inet_interfaces: all
         postfix_inet_protocols: all
   tasks:
-    - name: UFW allow SSH
-      become: yes
-      ufw:
-        rule: allow
-        name: OpenSSH
-
     - name: UFW allow mail
       become: yes
       ufw:
@@ -34,11 +29,6 @@
         rule: allow
         port: 443
         proto: tcp
-
-    - name: UFW enable
-      become: yes
-      ufw:
-        state: enabled
 
     - name: Copy docker folder
       copy:

@@ -10,7 +10,7 @@ on:
 env:
   MY_EMAIL: ${{ secrets.MY_EMAIL }}
   TRAEFIK_BASIC_AUTH: ${{ secrets.TRAEFIK_BASIC_AUTH }}
-  SSH_KEY_PUBLIC_HOME_DESKTOP: ${{ secrets.SSH_KEY_PUBLIC_GITHUB_ACTIONS }}
+  SSH_KEY_PUBLIC_GITHUB_ACTIONS: ${{ secrets.SSH_KEY_PUBLIC_GITHUB_ACTIONS }}
 
 jobs:
   terraform:
@@ -86,8 +86,8 @@ jobs:
       - name: Run bootstrap playbook
         run: ansible-playbook -u root -i inventory.ini bootstrap.yaml
 
-      - name: Run playbook
-        run: ansible-playbook -u ansible -i inventory.ini playbook.yaml
+      - name: Run aquila playbook
+        run: ansible-playbook -u ansible -i inventory.ini aquila.yaml
 
   secrets:
     needs: terraform
