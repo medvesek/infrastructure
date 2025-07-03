@@ -83,11 +83,11 @@ jobs:
       - name: Install dependencies
         run: ansible-galaxy install -r requirements.yaml
 
-      - name: Run bootstrap playbook
-        run: ansible-playbook -u root -i inventory.ini bootstrap.yaml
+      #- name: Run bootstrap playbook
+      #  run: ansible-playbook -u root -i inventory.ini bootstrap.yaml
 
       - name: Run aquila playbook
-        run: ansible-playbook -u ansible -i inventory.ini aquila.yaml
+        run: ansible-playbook -u root -i inventory.ini aquila.yaml
 
   secrets:
     needs: terraform
