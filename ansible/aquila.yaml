@@ -2,11 +2,11 @@
   hosts: aquila
   roles:
     - role: common
-    - role: docker
+    - role: appserver
       vars:
         traefik_basic_auth: "{{ lookup('env', 'TRAEFIK_BASIC_AUTH') }}"
         my_email: "{{ lookup('env', 'MY_EMAIL') }}"
-    - role: postfix
+    - role: mailserver
       vars:
         emails:
           - ajmuht.eu

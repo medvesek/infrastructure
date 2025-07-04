@@ -1,5 +1,4 @@
 - name: UFW allow mail
-  become: yes
   ufw:
     rule: allow
     name: Postfix
