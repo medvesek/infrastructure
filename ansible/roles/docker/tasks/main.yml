@@ -1,3 +1,8 @@
+- name: Generate .env file for docker-compose
+  template:
+    src: ./docker/traefik/.env.j2
+    dest: ./docker/traefik/env.j2
+
 - name: Copy docker folder
   copy:
     src: ./docker
