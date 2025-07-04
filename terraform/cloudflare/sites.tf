@@ -25,3 +25,10 @@ module "site_laravel_example_ajmuht" {
   ip = var.servers.aquila
   hostname = "laravel-example.ajmuht.eu"
 }
+
+module "site_fastify_example_ajmuht" {
+  source = "./modules/site"
+  zone_id = module.ajmuht_eu_domain.id
+  ip = var.servers.aquila
+  hostname = "fastify-example.ajmuht.eu"
+}
