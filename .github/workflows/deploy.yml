@@ -58,24 +58,24 @@ jobs:
         shell: bash
         run: echo -e "[aquila]\n${{ needs.terraform.outputs.aquila_ip }}" > inventory.ini
 
-      - name: Prepare env files
-        shell: bash
-        # Finds all .env.example files and replaces all values in them with corresponding
-        # values from the environment
-        run: |
-          find . -name '.env.example' | while read file; do
-          dir=$(dirname "$file")
-          out="${dir}/.env"
-          >"$out"
-          while IFS='=' read -r key val; do
-              [[ "$key" =~ ^[[:space:]]*# ]] && continue
-              [[ -z "$key" || "$key" =~ ^[[:space:]]*$ ]] && continue
-              key=$(echo "$key" | xargs)
-              envval="${!key}"
-              [[ -z "$envval" ]] && envval="$val"
-              echo "$key=$envval" >> "$out"
-            done < "$file"
-          done
+      # - name: Prepare env files
+      #   shell: bash
+      #   # Finds all .env.example files and replaces all values in them with corresponding
+      #   # values from the environment
+      #   run: |
+      #     find . -name '.env.example' | while read file; do
+      #     dir=$(dirname "$file")
+      #     out="${dir}/.env"
+      #     >"$out"
+      #     while IFS='=' read -r key val; do
+      #         [[ "$key" =~ ^[[:space:]]*# ]] && continue
+      #         [[ -z "$key" || "$key" =~ ^[[:space:]]*$ ]] && continue
+      #         key=$(echo "$key" | xargs)
+      #         envval="${!key}"
+      #         [[ -z "$envval" ]] && envval="$val"
+      #         echo "$key=$envval" >> "$out"
+      #       done < "$file"
+      #     done
 
       - name: Add to known hosts
         run: ssh-keyscan ${{ needs.terraform.outputs.aquila_ip }} >> /etc/ssh/ssh_known_hosts

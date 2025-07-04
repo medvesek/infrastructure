@@ -1,0 +1,7 @@
+dependencies:
+  - role: geerlingguy.postfix
+    vars:
+      postfix_service_state: started
+      postfix_service_enabled: true
+      postfix_inet_interfaces: all
+      postfix_inet_protocols: all

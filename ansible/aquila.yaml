@@ -6,54 +6,9 @@
       vars:
         traefik_basic_auth: "{{ lookup('env', 'TRAEFIK_BASIC_AUTH') }}"
         my_email: "{{ lookup('env', 'MY_EMAIL') }}"
-    - role: geerlingguy.postfix
+    - role: postfix
       vars:
-        postfix_service_state: started
-        postfix_service_enabled: true
-        postfix_inet_interfaces: all
-        postfix_inet_protocols: all
-  tasks:
-    - name: UFW allow mail
-      become: yes
-      ufw:
-        rule: allow
-        name: Postfix
-
-    - name: UFW allow http
-      become: yes
-      ufw:
-        rule: allow
-        port: 80
-        proto: tcp
-
-    - name: UFW allow https
-      become: yes
-      ufw:
-        rule: allow
-        port: 443
-        proto: tcp
-
-    - name: Postfix main.cf
-      lineinfile:
-        path: /etc/postfix/main.cf
-        regexp: "^virtual_alias_domains ="
-        line: virtual_alias_domains = cmrlj.eu ajmuht.eu
-
-    - name: Postfix main.cf
-      lineinfile:
-        path: /etc/postfix/main.cf
-        regexp: "^virtual_alias_maps ="
-        line: virtual_alias_maps = hash:/etc/postfix/virtual
-
-    - name: Postfix virtual
-      copy:
-        dest: /etc/postfix/virtual
-        content: |
-          @cmrlj.eu	{{ lookup("env", "MY_EMAIL") }}
-          @ajmuht.eu	{{ lookup("env", "MY_EMAIL") }}
-
-    - name: Postfix postmap
-      command: postmap /etc/postfix/virtual
-
-    - name: Postfix reload
-      command: postfix reload
+        emails:
+          - ajmuht.eu
+          - cmrlj.eu
+        forward_to: "{{ lookup('env', 'MY_EMAIL') }}"
