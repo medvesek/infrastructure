@@ -1,8 +1,11 @@
 - name: Aquila
   hosts: aquila
   roles:
-    - common
-    - docker
+    - role: common
+    - role: docker
+      vars:
+        traefik_basic_auth: {{ lookup("env", "TRAEFIK_BASIC_AUTH") }}
+        my_email: {{ lookup("env", "MY_EMAIL") }}
     - role: geerlingguy.postfix
       vars:
         postfix_service_state: started
