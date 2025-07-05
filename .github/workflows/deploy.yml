@@ -11,7 +11,7 @@ env:
   MY_EMAIL: ${{ secrets.MY_EMAIL }}
   TRAEFIK_BASIC_AUTH: ${{ secrets.TRAEFIK_BASIC_AUTH }}
   SSH_KEY_PUBLIC_GITHUB_ACTIONS: ${{ secrets.SSH_KEY_PUBLIC_GITHUB_ACTIONS }}
-
+  NETDATA_CLAIM_TOKEN: ${{ secrets.NETDATA_CLAIM_TOKEN }}
 jobs:
   terraform:
     runs-on: ubuntu-latest
