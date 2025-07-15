@@ -48,7 +48,7 @@
     compose:
       - /root/docker/traefik/docker-compose.yaml
 
-- name: Run Deploy app1
+- name: Run app1 stack
   community.docker.docker_stack:
     state: present
     name: app1

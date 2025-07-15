@@ -6,7 +6,7 @@ services:
       - "traefik.http.routers.echo.rule=Host(`test.ajmuht.eu`)"
       - "traefik.http.routers.echo.entrypoints=websecure"
       - "traefik.http.routers.echo.tls.certresolver=le"
-      - "traefik.http.services.myweb.loadbalancer.server.port=80"
+      - "traefik.http.services.echo.loadbalancer.server.port=80"
     networks:
       - traefik-net
 
