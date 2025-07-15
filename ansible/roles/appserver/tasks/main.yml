@@ -38,6 +38,7 @@
   community.docker.docker_network:
     name: traefik-net
     driver: overlay
+    attachable: true
     state: present
 
 - name: Run docker compose traefik
