@@ -56,7 +56,7 @@
       - /root/docker/app1/docker-compose.yaml
 
 - name: Run app2 stack
-  community.docker.docker_compose_v2:
+  community.docker.docker_stack:
     state: present
     name: app2
     compose:
