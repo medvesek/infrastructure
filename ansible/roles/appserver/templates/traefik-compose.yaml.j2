@@ -17,7 +17,7 @@ services:
       # SSL - letsencryppt
       - --certificatesresolvers.le.acme.httpchallenge=true
       - --certificatesresolvers.le.acme.httpchallenge.entrypoint=web
-      - --certificatesresolvers.le.acme.email={{ my email }}
+      - --certificatesresolvers.le.acme.email={{ my_email }}
       - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
     ports:
       - "80:80"

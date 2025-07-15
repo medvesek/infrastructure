@@ -29,7 +29,7 @@
     src: ./docker
     dest: ~/
 
-- name: Generate .env file for docker-compose
+- name: Generate treafik compose file
   template:
     src: traefik-compose.yaml.j2
     dest: ~/docker/traefik/docker-compose.yaml
