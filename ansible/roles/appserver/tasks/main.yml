@@ -31,8 +31,8 @@
 
 - name: Generate .env file for docker-compose
   template:
-    src: traefik.env.j2
-    dest: ~/docker/traefik
+    src: traefik-compose.yaml.j2
+    dest: ~/docker/traefik/docker-compose.yaml
 
 - name: Create treafik network
   community.docker.docker_network:
