@@ -1,3 +1,15 @@
 services:
   whoami:
     image: traefik/whoami
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.echo.rule=Host(`test.ajmuht.eu`)"
+      - "traefik.http.routers.echo.entrypoints=websecure"
+      - "traefik.http.routers.echo.tls.certresolver=le"
+      - traefik.http.services.myweb.loadbalancer.server.port=80
+    networks:
+      - traefik-net
+
+networks:
+  traefik-net:
+    external: true

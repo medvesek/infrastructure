@@ -45,8 +45,8 @@
     name: app1
     compose:
       - /root/docker/app1/docker-compose.yaml
+# - name: Run docker compose app2
+#   community.docker.docker_compose_v2:
+#     project_src: ~/docker/app2
+#     state: present
 
-- name: Run docker compose app2
-  community.docker.docker_compose_v2:
-    project_src: ~/docker/app2
-    state: present

@@ -6,6 +6,7 @@ services:
       - --api=true
       # Configure docker provider - autodiscover services
       - --providers.docker=true
+      - --providers.docker.swarmMode=true
       - --providers.docker.exposedbydefault=false # Services need to be enabled with a traefik.enable=true label to be autodiscovered
       - --providers.docker.network=traefik-net
       # Entrypoints - 80 and 443
@@ -35,6 +36,10 @@ services:
       - traefik-certs:/letsencrypt # Make letsencrypt cetificates persistent
     networks:
       - traefik-net
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
 
 volumes:
   traefik-certs:
