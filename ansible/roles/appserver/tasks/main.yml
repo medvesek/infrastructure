@@ -3,6 +3,11 @@
     name: python3-docker
     state: present
 
+- name: Jsondiff
+  package:
+    name: python3-jsondiff
+    state: present
+
 - name: UFW allow http
   ufw:
     rule: allow
