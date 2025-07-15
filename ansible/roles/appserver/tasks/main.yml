@@ -41,10 +41,12 @@
     attachable: true
     state: present
 
-- name: Run docker compose traefik
-  community.docker.docker_compose_v2:
-    project_src: ~/docker/traefik
+- name: Run treafik stack
+  community.docker.docker_stack:
     state: present
+    name: traefik
+    compose:
+      - /root/docker/traefik/docker-compose.yaml
 
 - name: Run Deploy app1
   community.docker.docker_stack:
