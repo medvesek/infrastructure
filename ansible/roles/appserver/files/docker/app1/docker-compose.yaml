@@ -6,10 +6,10 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.echo.rule=Host(`test.ajmuht.eu`)"
-        - "traefik.http.routers.echo.entrypoints=websecure"
-        - "traefik.http.routers.echo.tls.certresolver=le"
-        - "traefik.http.services.echo.loadbalancer.server.port=80"
+        - "traefik.http.routers.whoami.rule=Host(`test.ajmuht.eu`)"
+        - "traefik.http.routers.whoami.entrypoints=websecure"
+        - "traefik.http.routers.whoami.tls.certresolver=le"
+        - "traefik.http.services.whoami.loadbalancer.server.port=80"
 
 networks:
   traefik-net:
