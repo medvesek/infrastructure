@@ -37,6 +37,7 @@
 - name: Run Deploy app1
   community.docker.docker_stack:
     state: present
+    name: app1
     compose:
       - ~/docker/app1
 
