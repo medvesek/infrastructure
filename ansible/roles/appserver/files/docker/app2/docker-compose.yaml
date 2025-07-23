@@ -7,7 +7,6 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.echo.rule=Host(`test.cmrlj.eu`)"
-        #- "traefik.http.routers.echo.entrypoints=websecure"
         - "traefik.http.routers.echo.tls.certresolver=le"
         - "traefik.http.services.echo.loadbalancer.server.port=80"
 
