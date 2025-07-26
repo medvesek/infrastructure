@@ -21,7 +21,7 @@
     chdir: "{{ app_dir }}"
 
 - name: Run pre deploy commands
-  include_tasks: predeploy.yaml
+  include_tasks: predeploy.yml
   loop: "{{ pre_deploy }}"
 
 - name: Deploy
