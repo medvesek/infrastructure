@@ -1,0 +1,31 @@
+- name: Set vars
+  set_fact:
+    app_dir: "{{ ansible_env.HOME }}/docker/apps/{{ app_name }}"
+
+- name: Copy files
+  synchronize:
+    src: "{{ source }}/"
+    dest: "{{ app_dir }}"
+    mode: push
+    delete: yes
+
+- name: Check if stack already exists
+  command: docker stack ps {{ app_name }}
+  register: output_check_stack_exists
+  failed_when: output_check_stack_exists.rc not in [0,1]
+
+- name: Deploy if not exists
+  when: output_check_stack_exists.rc == 1
+  command: docker stack deploy --compose-file docker-compose.yml --detach=false --prune {{ app_name }}
+  args:
+    chdir: "{{ app_dir }}"
+
+- name: Run pre deploy commands
+  include_tasks: predeploy.yaml
+  loop: "{{ pre-deploy }}"
+
+- name: Deploy
+  when: output_check_stack_exists.rc == 0
+  command: docker stack deploy --compose-file docker-compose.yml --detach=false --prune {{ app_name }}
+  args:
+    chdir: "{{ app_dir }}"

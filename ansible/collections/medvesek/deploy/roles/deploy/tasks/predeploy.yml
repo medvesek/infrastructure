@@ -1,0 +1,16 @@
+- block:
+    - name: Run pre command - {{ item.name }}
+      command: |
+        docker service create
+        --mode replicated-job
+        --restart-condition none
+        --name {{ item.name }}
+        --env-file .env
+        --network {{ app_name }}_default
+        {{ item.image }} 
+        {{ item.command }}
+      args:
+        chdir: "{{ app_dir }}"
+  always:
+    - name: Cleanup pre command - {{ item.name }}
+      command: docker service rm {{ item.name }}
