@@ -22,7 +22,7 @@
 
 - name: Run pre deploy commands
   include_tasks: predeploy.yaml
-  loop: "{{ pre-deploy }}"
+  loop: "{{ pre_deploy }}"
 
 - name: Deploy
   when: output_check_stack_exists.rc == 0
