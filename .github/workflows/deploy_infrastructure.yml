@@ -9,12 +9,12 @@ on:
     paths:
       - ansible/**
       - terraform/**
+      - .github/workflows/deploy.yml
 
 env:
   MY_EMAIL: ${{ secrets.MY_EMAIL }}
   TRAEFIK_BASIC_AUTH: ${{ secrets.TRAEFIK_BASIC_AUTH }}
   SSH_KEY_PUBLIC_GITHUB_ACTIONS: ${{ secrets.SSH_KEY_PUBLIC_GITHUB_ACTIONS }}
-  NETDATA_CLAIM_TOKEN: ${{ secrets.NETDATA_CLAIM_TOKEN }}
 jobs:
   terraform:
     runs-on: ubuntu-latest
@@ -61,25 +61,6 @@ jobs:
         shell: bash
         run: echo -e "[aquila]\n${{ needs.terraform.outputs.aquila_ip }}" > inventory.ini
 
-      # - name: Prepare env files
-      #   shell: bash
-      #   # Finds all .env.example files and replaces all values in them with corresponding
-      #   # values from the environment
-      #   run: |
-      #     find . -name '.env.example' | while read file; do
-      #     dir=$(dirname "$file")
-      #     out="${dir}/.env"
-      #     >"$out"
-      #     while IFS='=' read -r key val; do
-      #         [[ "$key" =~ ^[[:space:]]*# ]] && continue
-      #         [[ -z "$key" || "$key" =~ ^[[:space:]]*$ ]] && continue
-      #         key=$(echo "$key" | xargs)
-      #         envval="${!key}"
-      #         [[ -z "$envval" ]] && envval="$val"
-      #         echo "$key=$envval" >> "$out"
-      #       done < "$file"
-      #     done
-
       - name: Add to known hosts
         run: ssh-keyscan ${{ needs.terraform.outputs.aquila_ip }} >> /etc/ssh/ssh_known_hosts
 
@@ -99,7 +80,7 @@ jobs:
       - uses: gliech/create-github-secret-action@v1
         with:
           location: medvesek
-          name: AQUILA_IP
+          name: SERVER_IP_AQUILA
           value: ${{ needs.terraform.outputs.aquila_ip }}
           org_visibility: all
-          pa_token: ${{ secrets.PA_TOKEN }}
+          pa_token: ${{ secrets.ORG_SECRETS_PAT }}
