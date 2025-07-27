@@ -6,6 +6,9 @@ on:
   push:
     branches:
       - master
+    paths:
+      - ansible/**
+      - terraform/**
 
 env:
   MY_EMAIL: ${{ secrets.MY_EMAIL }}
