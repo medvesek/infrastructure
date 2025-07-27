@@ -1,0 +1,20 @@
+services:
+{% for service, expose_configs in expose | groupby("service") %}
+  {{ service }}:
+    networks:
+      - default
+      - traefik-net
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        {% for expose_config in expose_configs %}
+        - "traefik.http.routers.{{ app_name ~ "_" ~ expose_config.port  }}.rule=Host(`{{ expose_config.hostname }}`)"
+        - "traefik.http.routers.{{ app_name ~ "_" ~ expose_config.port }}.entrypoints={{ expose_config.entrypoints }}"
+        - "traefik.http.routers.{{ app_name ~ "_" ~ expose_config.port }}.tls.certresolver=le"
+        - "traefik.http.routers.{{ app_name ~ "_" ~ expose_config.port }}.service={{ app_name }}"
+        - "traefik.http.services.{{ app_name }}.loadbalancer.server.port={{ expose_config.port }}"
+        {% endfor %}
+{% endfor %}
+networks:
+    traefik-net:
+        external: true

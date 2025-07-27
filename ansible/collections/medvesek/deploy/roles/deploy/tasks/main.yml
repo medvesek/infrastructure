@@ -1,6 +1,18 @@
 - name: Set vars
   set_fact:
     app_dir: "{{ ansible_env.HOME }}/docker/apps/{{ app_name }}"
+    deploy_command: |
+      dotenv docker stack deploy 
+      --compose-file docker-compose.yml 
+      --compose-file override.yml 
+      --detach=false 
+      --prune 
+      {{ app_name }}
+
+- name: python3-dotenv-cli
+  package:
+    name: python3-dotenv-cli
+    state: present
 
 - name: Copy files
   synchronize:
@@ -9,6 +21,12 @@
     mode: push
     delete: yes
 
+- name: Generate override
+  template:
+    src: override.yml.j2
+    dest: "{{ app_dir }}/override.yml"
+    lstrip_blocks: true
+
 - name: Check if stack already exists
   command: docker stack ps {{ app_name }}
   register: output_check_stack_exists
@@ -16,7 +34,7 @@
 
 - name: Deploy if not exists
   when: output_check_stack_exists.rc == 1
-  command: docker stack deploy --compose-file docker-compose.yml --detach=false --prune {{ app_name }}
+  command: "{{ deploy_command }}"
   args:
     chdir: "{{ app_dir }}"
 
@@ -26,6 +44,6 @@
 
 - name: Deploy
   when: output_check_stack_exists.rc == 0
-  command: docker stack deploy --compose-file docker-compose.yml --detach=false --prune {{ app_name }}
+  command: "{{ deploy_command }}"
   args:
     chdir: "{{ app_dir }}"
