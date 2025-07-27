@@ -12,6 +12,3 @@
           - ajmuht.eu
           - cmrlj.eu
         forward_to: "{{ lookup('env', 'MY_EMAIL') }}"
-  tasks:
-    - name: Uninstall netdata
-      shell: curl https://get.netdata.cloud/kickstart.sh > /tmp/netdata-kickstart.sh && sh /tmp/netdata-kickstart.sh --stable-channel --disable-telemetry --claim-token {{ lookup('env', 'NETDATA_CLAIM_TOKEN') }} --uninstall

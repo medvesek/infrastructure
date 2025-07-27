@@ -48,16 +48,9 @@
     compose:
       - /root/docker/traefik/docker-compose.yaml
 
-- name: Run app1 stack
+- name: Run example app stack
   community.docker.docker_stack:
     state: present
-    name: app1
+    name: example-app
     compose:
-      - /root/docker/app1/docker-compose.yaml
-
-- name: Run app2 stack
-  community.docker.docker_stack:
-    state: present
-    name: app2
-    compose:
-      - /root/docker/app2/docker-compose.yaml
+      - /root/docker/apps/example-app/docker-compose.yaml

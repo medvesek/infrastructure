@@ -6,7 +6,7 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.echo.rule=Host(`test.cmrlj.eu`)"
+        - "traefik.http.routers.echo.rule=Host(`test.ajmuht.eu`)"
         - "traefik.http.routers.echo.tls.certresolver=le"
         - "traefik.http.services.echo.loadbalancer.server.port=80"
 
