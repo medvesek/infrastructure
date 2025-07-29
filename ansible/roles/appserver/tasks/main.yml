@@ -1,26 +1,25 @@
 - name: Docker SDK for python
+  become: true
   package:
     name: python3-docker
     state: present
 
-- name: Jsondiff
-  package:
-    name: python3-jsondiff
-    state: present
-
 - name: UFW allow http
+  become: true
   ufw:
     rule: allow
     port: 80
     proto: tcp
 
 - name: UFW allow https
+  become: true
   ufw:
     rule: allow
     port: 443
     proto: tcp
 
 - name: Swarm init
+  become: true
   community.docker.docker_swarm:
     state: present
 
@@ -29,12 +28,13 @@
     src: ./docker
     dest: ~/
 
-- name: Generate treafik compose file
+- name: Generate traefik compose file
   template:
     src: traefik-compose.yaml.j2
     dest: ~/docker/traefik/docker-compose.yaml
 
-- name: Create treafik network
+- name: Create traefik network
+  become: true
   community.docker.docker_network:
     name: traefik-net
     driver: overlay
@@ -42,15 +42,7 @@
     state: present
 
 - name: Run treafik stack
-  community.docker.docker_stack:
-    state: present
-    name: traefik
-    compose:
-      - /root/docker/traefik/docker-compose.yaml
+  command: docker stack deploy --compose-file ~/docker/traefik/docker-compose.yaml --detach=true traefik
 
 - name: Run example app stack
-  community.docker.docker_stack:
-    state: present
-    name: example-app
-    compose:
-      - /root/docker/apps/example-app/docker-compose.yaml
+  command: docker stack deploy --compose-file ~/docker/apps/example-app/docker-compose.yaml --detach=true example-app

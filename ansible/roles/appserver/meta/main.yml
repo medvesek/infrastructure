@@ -1,2 +1,5 @@
 dependencies:
-  - geerlingguy.docker
+  - role: geerlingguy.docker
+    become: true
+    docker_users:
+      - ansible

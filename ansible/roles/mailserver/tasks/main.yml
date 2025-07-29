@@ -1,21 +1,25 @@
 - name: UFW allow mail
+  become: true
   ufw:
     rule: allow
     name: Postfix
 
 - name: Postfix main.cf
+  become: true
   lineinfile:
     path: /etc/postfix/main.cf
     regexp: "^virtual_alias_domains ="
     line: virtual_alias_domains = {{ emails | join(" ") }}
 
 - name: Postfix main.cf
+  become: true
   lineinfile:
     path: /etc/postfix/main.cf
     regexp: "^virtual_alias_maps ="
     line: virtual_alias_maps = hash:/etc/postfix/virtual
 
 - name: Postfix virtual
+  become: true
   copy:
     dest: /etc/postfix/virtual
     content: |
@@ -24,7 +28,9 @@
       {% endfor %}
 
 - name: Postfix postmap
+  become: true
   command: postmap /etc/postfix/virtual
 
 - name: Postfix reload
+  become: true
   command: postfix reload
