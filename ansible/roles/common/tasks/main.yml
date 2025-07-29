@@ -25,6 +25,6 @@
   command: pipx ensurepath
 
 - name: Dotenv
-  pipx:
+  community.general.pipx:
     name: dotenv
     state: present
