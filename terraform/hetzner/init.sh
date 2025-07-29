@@ -1,11 +1,12 @@
 #!/bin/bash
 
 # Add ansible user
+
 useradd -m -s /bin/bash ansible
 usermod -aG sudo ansible
 mkdir -p /home/ansible/.ssh
-echo ${SSH_KEY_PUBLIC_HOME_DESKTOP} >> /home/ansible/.ssh/authorized_keys
-echo ${SSH_KEY_PUBLIC_GITHUB_ACTIONS} >> /home/ansible/.ssh/authorized_keys
+echo "${SSH_KEY_PUBLIC_HOME_DESKTOP}" >> /home/ansible/.ssh/authorized_keys
+echo "${SSH_KEY_PUBLIC_GITHUB_ACTIONS}" >> /home/ansible/.ssh/authorized_keys
 chown -R ansible:ansible /home/ansible/.ssh
 echo "ansible ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
@@ -13,7 +14,7 @@ echo "ansible ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 useradd -m -s /bin/bash medvesekg
 usermod -aG sudo medvesekg
 mkdir -p /home/medvesekg/.ssh
-echo ${SSH_KEY_PUBLIC_HOME_DESKTOP} >> /home/medvesekg/.ssh/authorized_keys
+echo "${SSH_KEY_PUBLIC_HOME_DESKTOP}" >> /home/medvesekg/.ssh/authorized_keys
 chown -R medvesekg:medvesekg /home/medvesekg/.ssh
 echo "medvesekg ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
