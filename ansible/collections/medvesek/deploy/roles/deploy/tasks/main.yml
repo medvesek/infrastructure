@@ -9,10 +9,10 @@
       --prune 
       {{ app_name }}
 
-# - name: python3-dotenv-cli
-#   package:
-#     name: python3-dotenv-cli
-#     state: present
+- name: python3-dotenv-cli
+  package:
+    name: python3-dotenv-cli
+    state: present
 
 - name: Copy files
   synchronize:

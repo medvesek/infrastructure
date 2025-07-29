@@ -27,4 +27,4 @@
 - name: Dotenv
   community.general.pipx:
     name: dotenv-cli
-    state: present
+    state: absent
