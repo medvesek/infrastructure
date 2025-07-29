@@ -28,6 +28,11 @@
     src: ./docker
     dest: ~/
 
+- name: Create treafik directory
+  file:
+    path: ~/docker/traefik/
+    state: directory
+
 - name: Generate traefik compose file
   template:
     src: traefik-compose.yaml.j2
