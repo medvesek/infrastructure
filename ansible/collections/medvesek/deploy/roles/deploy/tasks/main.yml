@@ -41,6 +41,7 @@
 
 - name: Run pre deploy commands
   include_tasks: predeploy.yml
+  when: pre_deploy is defined
   loop: "{{ pre_deploy }}"
 
 - name: Deploy
