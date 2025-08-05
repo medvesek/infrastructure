@@ -24,3 +24,10 @@ module "site_fastify_example_ajmuht" {
   ip = var.servers.aquila
   hostname = "fastify-example.ajmuht.eu"
 }
+
+module "site_rubicon_combat_ajmuht" {
+  source = "./modules/site"
+  zone_id = module.ajmuht_eu_domain.id
+  ip = var.servers.aquila
+  hostname = "rubicon-websockets.ajmuht.eu"
+}
