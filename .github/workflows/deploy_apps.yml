@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        repo: [medvesek/laravel-example]
+        repo: [medvesek/laravel-example, medvesek/rubicon-combat]
     steps:
       - name: Trigger repository-dispatch
         uses: peter-evans/repository-dispatch@v3
