@@ -10,9 +10,10 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.echo.rule=Host(`test-static.ajmuht.eu`)"
-        - "traefik.http.routers.echo.tls.certresolver=le"
-        - "traefik.http.services.echo.loadbalancer.server.port=80"
+        - "traefik.http.routers.examle-static.rule=Host(`test-static.ajmuht.eu`)"
+        - "traefik.http.routers.examle-static.entrypoints=websecure"
+        - "traefik.http.routers.examle-static.tls.certresolver=le"
+        - "traefik.http.services.examle-static.loadbalancer.server.port=80"
 
 networks:
   traefik-net:

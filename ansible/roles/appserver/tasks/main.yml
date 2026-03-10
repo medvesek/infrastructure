@@ -51,3 +51,6 @@
 
 - name: Run example app stack
   command: docker stack deploy --compose-file ~/docker/apps/example-app/docker-compose.yaml --detach=true example-app
+
+- name: Run example static app stack
+  command: docker stack deploy --compose-file ~/docker/static/example-static/docker-compose.yaml --detach=true example-static
