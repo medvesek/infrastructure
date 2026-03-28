@@ -1,0 +1,36 @@
+name: Lkw
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - cli/lkw/**
+      - .github/workflows/lkw.yml
+    tags:
+      - "lkw/v*"
+
+jobs:
+  lkw:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: cli/lkw/go.mod
+
+      - name: Build
+        run: go build -o lkw .
+        working-directory: cli/lkw
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          files: cli/lkw/lkw
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
