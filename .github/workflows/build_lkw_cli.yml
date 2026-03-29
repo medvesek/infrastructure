@@ -8,7 +8,7 @@ on:
       - cli/lkw/**
       - .github/workflows/lkw.yml
     tags:
-      - "lkw/v*"
+      - "lkw-v*"
 
 jobs:
   lkw:
