@@ -21,30 +21,36 @@ var DeployCmd = &cobra.Command{
 	Short: "Deploy to app server",
 	Long:  "Deploy to app server",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if !slices.Contains(validTypes, deployType) {
+		if viper.GetString("domain") == "" {
+			return fmt.Errorf("domain is required")
+		}
+		if viper.GetString("source") == "" {
+			return fmt.Errorf("source is required")
+		}
+		if !slices.Contains(validTypes, viper.GetString("type")) {
 			return fmt.Errorf("type must be one of: %s", validTypes)
 		}
 		return runDeploy()
 	},
 }
 
-var deployType string
-var domain string
-var source string
-
 func init() {
-	DeployCmd.Flags().StringVar(&deployType, "type", "", "Type of the deploy [static|spa]")
-	DeployCmd.Flags().StringVar(&domain, "domain", "", "The domain e.g. mysite.domain.com")
-	DeployCmd.Flags().StringVar(&source, "source", "", "Directory to deploy")
+	DeployCmd.Flags().String("type", "", "Type of the deploy [static|spa]")
+	DeployCmd.Flags().String("domain", "", "The domain e.g. mysite.domain.com")
+	DeployCmd.Flags().String("source", "", "Directory to deploy")
 
-	DeployCmd.MarkFlagRequired("type")
-	DeployCmd.MarkFlagRequired("domain")
-	DeployCmd.MarkFlagRequired("source")
+	viper.BindPFlag("type", DeployCmd.Flags().Lookup("type"))
+	viper.BindPFlag("domain", DeployCmd.Flags().Lookup("domain"))
+	viper.BindPFlag("source", DeployCmd.Flags().Lookup("source"))
 }
 
 func runDeploy() error {
 	ip := viper.GetString("server_ip")
 	user := viper.GetString("ssh_user")
+	domain := viper.GetString("domain")
+	source := viper.GetString("source")
+	deployType := viper.GetString("type")
+
 	name := utils.NameFromDomain(domain)
 
 	err := setupDomain(domain, ip)
