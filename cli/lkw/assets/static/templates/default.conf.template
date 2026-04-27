@@ -7,7 +7,7 @@ server {
         root   /usr/share/nginx/html;
         index  index.html index.htm;
 
-        {{- if eq .Type "spa"}}
+        {{- if .Spa }}
           try_files $uri $uri/ /index.html;
         {{ end -}}
     }

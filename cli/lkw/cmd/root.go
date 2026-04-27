@@ -9,8 +9,9 @@ import (
 	"github.com/medvesek/infrastructure/lkw/cmd/cloudflare"
 	"github.com/medvesek/infrastructure/lkw/cmd/config"
 	"github.com/medvesek/infrastructure/lkw/cmd/deploy"
+	"github.com/medvesek/infrastructure/lkw/cmd/fun"
 	"github.com/medvesek/infrastructure/lkw/cmd/ls"
-	"github.com/medvesek/infrastructure/lkw/cmd/remove"
+	"github.com/medvesek/infrastructure/lkw/cmd/rm"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -30,8 +31,9 @@ func init() {
 	rootCmd.AddCommand(cloudflare.CloudflareCmd)
 	rootCmd.AddCommand(deploy.DeployCmd)
 	rootCmd.AddCommand(ls.LsCmd)
-	rootCmd.AddCommand(remove.RemoveCmd)
+	rootCmd.AddCommand(rm.RmCmd)
 	rootCmd.AddCommand(config.ConfigCmd)
+	rootCmd.AddCommand(fun.FunCmd)
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "Config file")
 }
 

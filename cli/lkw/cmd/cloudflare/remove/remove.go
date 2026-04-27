@@ -27,7 +27,7 @@ func init() {
 func removeARecord() {
 	cloudflareToken := viper.GetString("cloudflare_token")
 
-	client := cloudflare.NewCloudflareClient(cloudflareToken)
+	client := cloudflare.New(cloudflareToken)
 
 	_, err := client.RemoveARecord(domain)
 

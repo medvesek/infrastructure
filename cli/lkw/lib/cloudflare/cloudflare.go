@@ -15,7 +15,7 @@ type CloudflareClient struct {
 	client *cloudflare.Client
 }
 
-func NewCloudflareClient(token string) *CloudflareClient {
+func New(token string) *CloudflareClient {
 	return &CloudflareClient{
 		client: cloudflare.NewClient(option.WithAPIToken(token)),
 	}

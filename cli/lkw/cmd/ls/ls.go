@@ -3,8 +3,8 @@ package ls
 import (
 	"fmt"
 
-	"github.com/medvesek/infrastructure/lkw/constants"
 	"github.com/medvesek/infrastructure/lkw/lib/remote"
+	"github.com/medvesek/infrastructure/lkw/src/constants"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -23,7 +23,7 @@ func ls() {
 	user := viper.GetString("ssh_user")
 	dir := "~/" + constants.RemoteDir
 
-	remoteClient := remote.NewRemoteClient(user, ip)
+	remoteClient := remote.New(user, ip)
 
 	remoteClient.Cmd(fmt.Sprintf("ls %s", dir))
 

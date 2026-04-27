@@ -1,5 +1,5 @@
-name: Deploy
-description: Deploy
+name: lkwdeploy
+description: deploy with lkw
 
 inputs:
   cloudflare-token:
@@ -14,15 +14,10 @@ inputs:
   ssh-private-key:
     description: "Ssh private key"
     required: true
-  type:
-    description: static | spa
+  config:
+    description: "Path to config file"
     required: false
-  domain:
-    description: Domain
-    required: false
-  source:
-    description: "Dir to deploy"
-    required: false
+    default: lkw.yaml
 
 runs:
   using: "composite"
@@ -46,8 +41,4 @@ runs:
         LKW_SERVER_IP: ${{ inputs.server-ip }}
         LKW_SSH_USER: ${{ inputs.ssh-user }}
       run: |
-        FLAGS=""
-        [ -n "${{ inputs.type }}" ] && FLAGS="$FLAGS --type ${{ inputs.type }}"
-        [ -n "${{ inputs.domain }}" ] && FLAGS="$FLAGS --domain ${{ inputs.domain }}"
-        [ -n "${{ inputs.source }}" ] && FLAGS="$FLAGS --source ${{ inputs.source }}"
-        lkw deploy $FLAGS
+        lkw deploy --config {{ inputs.config }}

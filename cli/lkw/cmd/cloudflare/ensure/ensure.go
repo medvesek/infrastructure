@@ -30,7 +30,7 @@ func init() {
 func ensureARecord() {
 	cloudflareToken := viper.GetString("cloudflare_token")
 
-	client := cloudflare.NewCloudflareClient(cloudflareToken)
+	client := cloudflare.New(cloudflareToken)
 
 	_, err := client.EnsureARecord(domain, ip)
 

@@ -4,11 +4,16 @@ import (
 	"embed"
 	"fmt"
 
-	"github.com/medvesek/infrastructure/lkw/assets"
-	"github.com/medvesek/infrastructure/lkw/constants"
+	"github.com/medvesek/infrastructure/lkw/lib/efs"
+	"github.com/medvesek/infrastructure/lkw/lib/temp"
 	"github.com/medvesek/infrastructure/lkw/lib/template"
-	"github.com/medvesek/infrastructure/lkw/lib/utils"
+	"github.com/medvesek/infrastructure/lkw/src/constants"
+	"github.com/spf13/viper"
 )
+
+type DeployCmd[T any] interface {
+	Run(config T) error
+}
 
 type TemplateItem struct {
 	String   string
@@ -16,8 +21,14 @@ type TemplateItem struct {
 	FileName string
 }
 
+func Run[T any](deployCmd DeployCmd[T]) error {
+	var config T
+	viper.Unmarshal(&config)
+	return deployCmd.Run(config)
+}
+
 func PrepareSupportFiles(templates []TemplateItem, embedFs embed.FS) (string, func(), error) {
-	tempDir, cleanup, err := utils.CreateTempDir(fmt.Sprintf("%s-*", constants.AppName))
+	tempDir, cleanup, err := temp.CreateDir(fmt.Sprintf("%s-*", constants.CliName))
 	if err != nil {
 		return "", cleanup, err
 	}
@@ -29,7 +40,7 @@ func PrepareSupportFiles(templates []TemplateItem, embedFs embed.FS) (string, fu
 		}
 	}
 
-	err = assets.WriteFiles(&embedFs, tempDir)
+	err = efs.WriteFiles(&embedFs, tempDir)
 
 	if err != nil {
 		return tempDir, cleanup, err

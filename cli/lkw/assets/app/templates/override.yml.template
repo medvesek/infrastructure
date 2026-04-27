@@ -1,0 +1,22 @@
+services:
+{{ range .Expose }}
+  {{ .Service }}:
+    networks:
+      - default
+      - traefik-net
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        {{ range .Expose }}
+        - "traefik.http.routers.{{ $.Name }}_{{ .Port  }}.rule=Host(`{{ .Domain }}`)"
+        - "traefik.http.routers.{{ $.Name }}_{{ .Port }}.entrypoints={{ .Entrypoint }}"
+        - "traefik.http.routers.{{ $.Name }}_{{ .Port }}.tls.certresolver=le"
+        - "traefik.http.routers.{{ $.Name }}_{{ .Port }}.service={{ $.Name }}"
+        - "traefik.http.services.{{ $.Name }}.loadbalancer.server.port={{ .Port }}"
+        {{ end }}
+{{ end }}
+networks:
+    default:
+      attachable: true
+    traefik-net:
+        external: true
