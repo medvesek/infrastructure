@@ -8,7 +8,7 @@ on:
       - master
     paths:
       - docker/**
-      - .github/workflows/docker.yml
+      - .github/workflows/build_images.yml
 
 jobs:
   build:
