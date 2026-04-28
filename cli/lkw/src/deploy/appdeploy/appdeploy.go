@@ -3,6 +3,7 @@ package appdeploy
 import (
 	"fmt"
 	"maps"
+	"path"
 	"slices"
 	"strings"
 
@@ -12,6 +13,7 @@ import (
 	"github.com/medvesek/infrastructure/lkw/src/deploy"
 	"github.com/medvesek/infrastructure/lkw/src/dns"
 	"github.com/medvesek/infrastructure/lkw/src/remote"
+	"github.com/spf13/viper"
 )
 
 type AppDeploy struct{}
@@ -40,7 +42,6 @@ func New() *AppDeploy {
 }
 
 func (ad *AppDeploy) Run(config Config) error {
-	source := config.Source
 	name := config.Name
 	serviceName := utils.DockerName(name)
 
@@ -52,6 +53,8 @@ func (ad *AppDeploy) Run(config Config) error {
 	if err != nil {
 		return err
 	}
+
+	source := path.Join(path.Dir(viper.GetString("config")), config.Source)
 
 	cmd.Rsync(source+"/", tempDir+"/")
 
@@ -101,6 +104,10 @@ func (ad *AppDeploy) Run(config Config) error {
 	}
 
 	return nil
+}
+
+func (ad *AppDeploy) Remove(config Config) {
+
 }
 
 func getTemplateItems(config Config) []deploy.TemplateItem {

@@ -1,0 +1,14 @@
+name: lkwtest-app.ajmuht.eu
+type: app
+source: test/app/src
+expose:
+  - service: nginx
+    expose:
+      - port: 80
+        entrypoint: websecure
+        domain: lkwtest-app.ajmuht.eu
+predeploy:
+  - name: example_pre_command
+    image: nginx:latest
+    envfile: .env
+    command: bash -c "echo \$FANCY_ENV"

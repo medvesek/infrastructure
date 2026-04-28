@@ -1,0 +1,32 @@
+name: Deploy lkw examples
+run-name: "deploy lkw examples: ${{ github.event.head_commit.message }}"
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - cli/lkw/**
+      - .github/workflows/deploy_lkw_examples.yml
+    tags:
+      - "lkw-v*"
+
+jobs:
+  lkw:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: cli/lkw/go.mod
+
+      - name: Deploy static
+        run: go run . deploy
+        working-directory: cli/lkw/examples/static
+
+      - name: Deploy static spa
+        run: go run . deploy
+        working-directory: cli/lkw/examples/static-spa

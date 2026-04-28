@@ -13,6 +13,7 @@ import (
 
 type DeployCmd[T any] interface {
 	Run(config T) error
+	Remove(config T)
 }
 
 type TemplateItem struct {
@@ -25,6 +26,12 @@ func Run[T any](deployCmd DeployCmd[T]) error {
 	var config T
 	viper.Unmarshal(&config)
 	return deployCmd.Run(config)
+}
+
+func Remove[T any](deployCmd DeployCmd[T]) {
+	var config T
+	viper.Unmarshal(&config)
+	deployCmd.Remove(config)
 }
 
 func PrepareSupportFiles(templates []TemplateItem, embedFs embed.FS) (string, func(), error) {

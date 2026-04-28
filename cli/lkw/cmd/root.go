@@ -9,7 +9,6 @@ import (
 	"github.com/medvesek/infrastructure/lkw/cmd/cloudflare"
 	"github.com/medvesek/infrastructure/lkw/cmd/config"
 	"github.com/medvesek/infrastructure/lkw/cmd/deploy"
-	"github.com/medvesek/infrastructure/lkw/cmd/fun"
 	"github.com/medvesek/infrastructure/lkw/cmd/ls"
 	"github.com/medvesek/infrastructure/lkw/cmd/rm"
 	"github.com/spf13/cobra"
@@ -33,8 +32,9 @@ func init() {
 	rootCmd.AddCommand(ls.LsCmd)
 	rootCmd.AddCommand(rm.RmCmd)
 	rootCmd.AddCommand(config.ConfigCmd)
-	rootCmd.AddCommand(fun.FunCmd)
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "Config file")
+
+	viper.BindPFlag("config", rootCmd.PersistentFlags().Lookup("config"))
 }
 
 func Execute() {

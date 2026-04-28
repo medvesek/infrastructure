@@ -24,3 +24,22 @@ func SetupDomains(domains []string) error {
 	}
 	return nil
 }
+
+func RemoveDomain(domain string) error {
+	cloudflareToken := baseconfig.CloudflareToken()
+
+	cloudflareClient := cloudflare.New(cloudflareToken)
+
+	_, err := cloudflareClient.RemoveARecord(domain)
+
+	return err
+}
+
+func RemoveDomains(domains []string) error {
+	for _, domain := range domains {
+		if err := RemoveDomain(domain); err != nil {
+			return err
+		}
+	}
+	return nil
+}

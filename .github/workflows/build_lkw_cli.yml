@@ -6,7 +6,7 @@ on:
       - master
     paths:
       - cli/lkw/**
-      - .github/workflows/lkw.yml
+      - .github/workflows/build_lkw_cli.yml
     tags:
       - "lkw-v*"
 

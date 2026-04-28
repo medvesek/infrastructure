@@ -2,6 +2,7 @@ package staticdeploy
 
 import (
 	"fmt"
+	"path"
 
 	"github.com/medvesek/infrastructure/lkw/assets"
 	"github.com/medvesek/infrastructure/lkw/lib/cmd"
@@ -9,6 +10,7 @@ import (
 	"github.com/medvesek/infrastructure/lkw/src/deploy"
 	"github.com/medvesek/infrastructure/lkw/src/dns"
 	"github.com/medvesek/infrastructure/lkw/src/remote"
+	"github.com/spf13/viper"
 )
 
 type StaticDeploy struct{}
@@ -37,7 +39,9 @@ func (sd *StaticDeploy) Run(config Config) error {
 		return err
 	}
 
-	cmd.Rsync(utils.EnsureTrailingSlash(config.Source), tempDir+"/public/")
+	source := path.Join(path.Dir(viper.GetString("config")), config.Source)
+
+	cmd.Rsync(utils.EnsureTrailingSlash(source), tempDir+"/public/")
 
 	remoteClient := remote.New()
 
@@ -57,6 +61,18 @@ func (sd *StaticDeploy) Run(config Config) error {
 	fmt.Println("https://" + config.Domain)
 
 	return nil
+}
+
+func (sd *StaticDeploy) Remove(config Config) {
+	dns.RemoveDomain(config.Domain)
+
+	remoteClient := remote.New()
+
+	destination := remote.GetDestination(config.Domain)
+
+	remoteClient.Cmd("docker stack rm  " + utils.DockerName(config.Domain))
+
+	remoteClient.Cmd("rm -rf " + destination)
 }
 
 func getTemplateItems(config Config) []deploy.TemplateItem {

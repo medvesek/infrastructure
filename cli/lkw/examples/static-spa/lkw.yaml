@@ -1,0 +1,4 @@
+type: static
+source: test/static-spa/public
+domain: lkwtest-static-spa.ajmuht.eu
+spa: true
