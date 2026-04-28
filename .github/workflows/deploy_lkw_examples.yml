@@ -24,9 +24,9 @@ jobs:
           go-version-file: cli/lkw/go.mod
 
       - name: Deploy static
-        run: go run . deploy
-        working-directory: cli/lkw/examples/static
+        run: go run . deploy --config examples/static/lkw.yaml
+        working-directory: cli/lkw
 
       - name: Deploy static spa
-        run: go run . deploy
-        working-directory: cli/lkw/examples/static-spa
+        run: go run . deploy --config examples/static-spa/lkw.yaml
+        working-directory: cli/lkw
