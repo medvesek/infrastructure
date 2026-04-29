@@ -63,7 +63,7 @@ func (ad *AppDeploy) Run(config Config) error {
 	remoteDestination := remote.GetDestination(name)
 
 	deployCommand := fmt.Sprintf(
-		"docker stack deploy --compose-file %[1]s/docker-compose.yaml --compose-file %[1]s/override.yaml --detach=true --prune %[2]s",
+		"cd %[1]s; dotenv docker stack deploy --compose-file %[1]s/docker-compose.yaml --compose-file %[1]s/override.yaml --detach=false --prune %[2]s",
 		remoteDestination,
 		serviceName,
 	)
@@ -107,7 +107,19 @@ func (ad *AppDeploy) Run(config Config) error {
 }
 
 func (ad *AppDeploy) Remove(config Config) {
+	domains := getDomainsFromConfig(config)
+	dns.RemoveDomains(domains)
 
+	name := config.Name
+	serviceName := utils.DockerName(name)
+
+	remoteClient := remote.New()
+
+	destination := remote.GetDestination(name)
+
+	remoteClient.Cmd("docker stack rm  " + serviceName)
+
+	remoteClient.Cmd("rm -rf " + destination)
 }
 
 func getTemplateItems(config Config) []deploy.TemplateItem {
@@ -140,6 +152,7 @@ func createPreCommands(config Config, remoteDestination string) []string {
 		preCommand.WriteString("docker run ")
 		preCommand.WriteString("--rm ")
 		preCommand.WriteString(fmt.Sprintf("--network %s_default ", utils.DockerName(config.Name)))
+		preCommand.WriteString("--pull=always ")
 		if preCommandConfig.EnvFile != "" {
 			fmt.Fprintf(&preCommand, "--env-file %s/%s ", remoteDestination, preCommandConfig.EnvFile)
 		}
