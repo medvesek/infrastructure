@@ -28,7 +28,9 @@ runs:
         ssh-private-key: ${{ inputs.ssh-private-key }}
     - name: Known hosts
       shell: bash
-      run: ssh-keyscan ${{ inputs.server-ip }} >> ~/.ssh/known_hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan ${{ inputs.server-ip }} >> ~/.ssh/known_hosts
     - name: Install lkw
       shell: bash
       run: |
